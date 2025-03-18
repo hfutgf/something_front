@@ -1,46 +1,27 @@
-import eslint from "@eslint/js";
-import airbnb from "eslint-config-airbnb";
-import prettier from "eslint-config-prettier";
-import next from "eslint-plugin-next";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
-import tailwindcss from "eslint-plugin-tailwindcss";
+import { FlatCompat } from '@eslint/eslintrc';
+import eslintPluginImport from 'eslint-plugin-import';
+import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
+import eslintPluginTypescript from '@typescript-eslint/eslint-plugin';
+
+const compat = new FlatCompat();
 
 export default [
-  eslint.configs.recommended,
-  airbnb,
-  prettier,
-  tailwindcss.configs.recommended,
-  next.configs["core-web-vitals"],
+  ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
     plugins: {
-      prettier,
-      tailwindcss,
-      "simple-import-sort": simpleImportSort,
+      import: eslintPluginImport,
+      'simple-import-sort': eslintPluginSimpleImportSort,
+      '@typescript-eslint': eslintPluginTypescript,
     },
     rules: {
-      "react/jsx-filename-extension": [
-        1,
-        { extensions: [".js", ".jsx", ".ts", ".tsx"] },
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+      'no-console': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
       ],
-      "no-console": "warn",
-      "simple-import-sort/imports": "error",
-      "import/no-duplicates": "error",
-      "newline-before-return": "error",
-      "no-unused-vars": ["error", { args: "none" }],
-      "import/no-extraneous-dependencies": "off",
-      "import/extensions": "off",
-      "react/jsx-props-no-spreading": "off",
-      "react/no-array-index-key": "off",
-      "react/require-default-props": [
-        "error",
-        { ignoreFunctionalComponents: true },
-      ],
-      "tailwindcss/migration-from-tailwind-2": "off",
-      "eol-last": ["error", "always"],
-      "react/function-component-definition": "off",
-      "jsx-a11y/no-static-element-interactions": "off",
-      "jsx-a11y/click-events-have-key-events": "off",
-      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      '@typescript-eslint/no-explicit-any': 'error',
     },
   },
 ];
