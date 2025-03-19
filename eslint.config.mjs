@@ -1,13 +1,21 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import eslintPluginImport from 'eslint-plugin-import';
 import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
 import eslintPluginTypescript from '@typescript-eslint/eslint-plugin';
-
-const compat = new FlatCompat();
+import typescriptParser from '@typescript-eslint/parser';
 
 export default [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
     plugins: {
       import: eslintPluginImport,
       'simple-import-sort': eslintPluginSimpleImportSort,

@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
+  "eslint.enable": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.validate": [
     "javascript",
@@ -13,5 +14,7 @@
     "source.fixAll.stylelint",
     "source.fixAll.markdownlint"
   ],
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "eslint.useFlatConfig": true,
+  "eslint.debug": true
 }

@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --fix",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -36,17 +36,15 @@
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
     "eslint": "^9.22.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-next": "15.2.3",
-    "eslint-import-resolver-typescript": "^4.2.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-next": "^0.0.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "globals": "^16.0.0",
     "husky": "^8.0.0",
     "lint-staged": "^15.5.0",
     "prettier": "^3.5.3",
     "tailwindcss": "^4",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1"
   }
 }
