@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -77,6 +78,7 @@ const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async redirect({ url, baseUrl }) {
       return baseUrl;
     },
@@ -108,6 +110,7 @@ const authOptions: NextAuthOptions = {
             avatar: newUser.avatar,
           };
           token.accessToken = accessToken;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {}
       } else if (user) {
         token.user = user.user;
@@ -120,13 +123,8 @@ const authOptions: NextAuthOptions = {
     async session({ session, token }: any) {
       session.user = token.user.user as UserType;
       session.accessToken = token.user.accessToken as string;
-
       return session;
     },
-  },
-
-  pages: {
-    signIn: '/auth/login',
   },
 };
 

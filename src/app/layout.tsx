@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import React from 'react';
 
+import { Providers } from './providers';
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -21,7 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable}  antialiased`}>{children}</body>
+      <Providers>
+        <body className={`${geistSans.variable}  antialiased`}>{children}</body>
+      </Providers>
     </html>
   );
 }
