@@ -13,7 +13,6 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
     console.error(error);
   }, [error]);
 
@@ -22,7 +21,11 @@ export default function Error({
       <h1 className="text-4xl font-bold mb-4">Something went wrong!</h1>
       <p className="text-gray-400 mb-8">{error.message}</p>
       <div className="flex gap-4">
-        <Button variant="outline" onClick={() => reset()}>
+        <Button
+          variant="outline"
+          className="text-black"
+          onClick={() => reset()}
+        >
           Try again
         </Button>
         <Link href="/">

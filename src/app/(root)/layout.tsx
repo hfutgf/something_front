@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
 
-import Header from '@/components/shared/header';
 import Sidebar from '@/components/shared/sidebar';
+
+const Header = dynamic(() => import('@/components/shared/header'), {});
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   return (

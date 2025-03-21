@@ -2,7 +2,9 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { GoogleIcon } from '@/components/icons';
@@ -27,9 +29,37 @@ export default function LoginPage() {
     },
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
+
   const onSubmit = async (data: LoginFormData) => {
-    // eslint-disable-next-line no-console
-    console.log('Form data:', data);
+    setIsLoading(true);
+    setError(null);
+
+    const result = await signIn('credentials', {
+      redirect: false,
+      username: data.username,
+      password: data.password,
+    });
+
+    if (result?.error) {
+      setError(result.error);
+      setIsLoading(false);
+    } else {
+      router.push('/');
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const result = await signIn('google', { redirect: false });
+
+    if (result?.error) {
+      console.error('Login failed:', result.error);
+    } else {
+      router.push('/');
+    }
   };
 
   return (
@@ -70,17 +100,24 @@ export default function LoginPage() {
           <Button
             type="submit"
             className="w-full bg-purple-600 hover:bg-purple-600 hover:opacity-75"
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? 'Logging in...' : 'Login'}
           </Button>
         </form>
       </Form>
+
+      {error && (
+        <div className="mt-4 text-center text-sm text-red-500">
+          Error: {error}
+        </div>
+      )}
 
       <hr className="my-6" />
 
       <div className="mt-4 text-center">
         <Button
-          onClick={() => signIn('google')}
+          onClick={handleGoogleLogin}
           variant="outline"
           className="w-full mt-4 flex items-center justify-center gap-2 text-black hover:opacity-75"
         >

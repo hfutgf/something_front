@@ -5,6 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  --color-twitch-dark: #0e0e10;
+  --color-twitch-purple: #9147ff;
+  --color-twitch-purple-hover: #772ce8;
+  --color-twitch-border: #2c2541;
+  --color-twitch-text-secondary: #adadb8;
+
   --breakpoint-xs: 550px;
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;

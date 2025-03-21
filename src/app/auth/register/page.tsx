@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useRegisterMutation } from '@/features/auth/hooks/use-register-mutation';
 
 export default function RegisterPage() {
   const form = useForm<RegisterFormData>({
@@ -22,15 +23,17 @@ export default function RegisterPage() {
     defaultValues: {
       username: '',
       password: '',
+      confirmPassword: '',
       firstName: '',
       lastName: '',
       birthday: '',
     },
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
-    // eslint-disable-next-line no-console
-    console.log('Form data:', data);
+  const registerMutation = useRegisterMutation();
+
+  const onSubmit = (data: RegisterFormData) => {
+    registerMutation.mutate(data);
   };
 
   return (
@@ -100,6 +103,24 @@ export default function RegisterPage() {
 
           <FormField
             control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Confirm your password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="birthday"
             render={({ field }) => (
               <FormItem>
@@ -115,11 +136,20 @@ export default function RegisterPage() {
           <Button
             type="submit"
             className="w-full bg-purple-600 hover:bg-purple-600 hover:opacity-75 mt-4"
+            disabled={registerMutation.isPending}
           >
-            Register
+            {registerMutation.isPending ? 'Registering...' : 'Register'}
           </Button>
         </form>
       </Form>
+
+      {registerMutation.isError && (
+        <div className="mt-4 text-center text-sm text-red-500">
+          Error:{' '}
+          {registerMutation.error.response?.data?.message ||
+            registerMutation.error.message}
+        </div>
+      )}
 
       <div className="mt-4 text-center text-sm text-gray-400">
         <p>
