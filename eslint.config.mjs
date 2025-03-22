@@ -6,6 +6,19 @@ import typescriptParser from '@typescript-eslint/parser';
 export default [
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: [
+      'node_modules/',
+      '.next/',
+      'out/',
+      'dist/',
+      '*.config.js',
+      '**/*.d.ts',
+      '**/__tests__/',
+      '**/__mocks__/',
+      'public/',
+      '.env',
+      '.env.local',
+    ],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
@@ -24,7 +37,7 @@ export default [
     rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
-      'no-console': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_' },

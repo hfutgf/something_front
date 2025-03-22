@@ -1,9 +1,10 @@
-import axios from 'axios';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
 import { UserType } from '@/features/auth/types/user.type';
+import { api } from '@/lib/axios';
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -13,7 +14,6 @@ const authOptions: NextAuthOptions = {
         username: {
           label: 'username',
           type: 'text',
-          placeholder: 'Your username',
         },
         password: { label: 'Password', type: 'password' },
       },
@@ -22,19 +22,13 @@ const authOptions: NextAuthOptions = {
           throw new Error('Username and password are required');
         }
         try {
-          const { data: response } = await axios.post<{
+          const { data: response } = await api.post<{
             user: UserType;
             accessToken: string;
-          }>(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/login`,
-            {
-              username: credentials.username,
-              password: credentials.password,
-            },
-            {
-              headers: { 'Content-Type': 'application/json' },
-            },
-          );
+          }>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+            username: credentials.username,
+            password: credentials.password,
+          });
 
           if (response) {
             return {
@@ -56,8 +50,8 @@ const authOptions: NextAuthOptions = {
     }),
 
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
       profile(profile) {
         return {
           id: profile.sub,
@@ -70,30 +64,26 @@ const authOptions: NextAuthOptions = {
     }),
   ],
 
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXT_PUBLIC_JWT_SECRET,
 
   session: {
     strategy: 'jwt',
   },
 
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      return baseUrl;
-    },
-
-    async jwt({ token, user, account, profile }: any) {
+    async jwt({ token, user, account, profile }) {
       if (account && profile) {
         try {
           const {
             data: { user: newUser, accessToken },
-          } = await axios.post(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/google-auth`,
+          } = await api.post(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/google`,
             {
               googleId: profile.sub,
               email: profile.email,
-              firstName: profile.firstName,
-              lastName: profile.lastName,
-              avatar: profile.avatar,
+              firstName: profile.given_name,
+              lastName: profile.family_name,
+              avatar: profile.picture,
             },
             {
               headers: { 'Content-Type': 'application/json' },
@@ -102,29 +92,35 @@ const authOptions: NextAuthOptions = {
 
           token.user = {
             id: newUser.id,
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
             email: newUser.email,
             avatar: newUser.avatar,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
           };
           token.accessToken = accessToken;
-        } catch (error) {}
+        } catch (error) {
+          console.error('Google auth error:', error);
+        }
       } else if (user) {
-        token.user = user.user;
+        token.user = {
+          id: user.id,
+          email: user.email,
+          avatar: user.avatar,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
         token.accessToken = user.accessToken;
       }
 
       return token;
     },
 
-    async session({ session, token }: any) {
-      session.user = token.user.user as UserType;
-      session.accessToken = token.user.accessToken as string;
-
+    async session({ session, token }) {
+      session.user = token.user;
+      session.accessToken = token.accessToken;
       return session;
     },
   },
-
   pages: {
     signIn: '/auth/login',
   },

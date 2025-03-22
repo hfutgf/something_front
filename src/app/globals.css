@@ -4,6 +4,30 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-twitch-dark: #0e0e10;
+  --color-twitch-purple: #9147ff;
+  --color-twitch-purple-hover: #772ce8;
+  --color-twitch-border: #2c2541;
+  --color-twitch-text-secondary: #adadb8;
+
+  --breakpoint-xs: 550px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  --breakpoint-3xl: 1800px;
+
+  --container-xs: 550px;
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+  --container-3xl: 1800px;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
