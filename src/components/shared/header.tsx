@@ -20,7 +20,7 @@ export default function Header() {
     : 'U';
 
   return (
-    <header className="p-4 bg-twitch-dark flex justify-between items-center min-h-[75px]">
+    <header className="p-4 bg-gray-800 flex justify-between items-center min-h-[75px]">
       <h1 className="text-2xl font-bold text-white">Twitch Clone</h1>
 
       {status === 'authenticated' ? (
@@ -40,7 +40,7 @@ export default function Header() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="w-56 bg-twitch-dark border-twitch-border rounded-lg shadow-lg"
+            className="w-56 bg-gray-900 border-twitch-border rounded-lg shadow-lg"
             align="end"
             forceMount
           >
