@@ -99,7 +99,8 @@ export default function LoginPage() {
           />
           <Button
             type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-600 hover:opacity-75"
+            size={'lg'}
+            className="w-full bg-white hover:bg-white hover:opacity-75 text-black"
             disabled={isLoading}
           >
             {isLoading ? 'Logging in...' : 'Login'}
@@ -108,15 +109,14 @@ export default function LoginPage() {
       </Form>
 
       {error && (
-        <div className="mt-4 text-center text-sm text-red-500">
-          Error: {error}
-        </div>
+        <div className="mt-4 text-center text-sm text-red-500">{error}</div>
       )}
 
       <hr className="my-6" />
 
       <div className="mt-4 text-center">
         <Button
+          size={'lg'}
           onClick={handleGoogleLogin}
           variant="outline"
           className="w-full mt-4 flex items-center justify-center gap-2 text-black hover:opacity-75"
@@ -128,10 +128,7 @@ export default function LoginPage() {
       <div className="mt-4 text-center text-sm text-gray-400">
         <p>
           Don&apos;t have an account?{' '}
-          <Link
-            href="/auth/register"
-            className="text-purple-400 hover:underline"
-          >
+          <Link href="/auth/register" className="text-blue-400 hover:underline">
             Register
           </Link>
         </p>
@@ -139,7 +136,7 @@ export default function LoginPage() {
           Forgot your password?{' '}
           <Link
             href="/auth/forgot-password"
-            className="text-purple-400 hover:underline"
+            className="text-blue-400 hover:underline"
           >
             Reset it
           </Link>

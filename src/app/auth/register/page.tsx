@@ -134,8 +134,9 @@ export default function RegisterPage() {
           />
 
           <Button
+            size={'lg'}
             type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-600 hover:opacity-75 mt-4"
+            className="w-full bg-white hover:bg-white hover:opacity-75 mt-4 text-black"
             disabled={registerMutation.isPending}
           >
             {registerMutation.isPending ? 'Registering...' : 'Register'}
@@ -145,7 +146,6 @@ export default function RegisterPage() {
 
       {registerMutation.isError && (
         <div className="mt-4 text-center text-sm text-red-500">
-          Error:{' '}
           {registerMutation.error.response?.data?.message ||
             registerMutation.error.message}
         </div>
@@ -154,7 +154,7 @@ export default function RegisterPage() {
       <div className="mt-4 text-center text-sm text-gray-400">
         <p>
           Already have an account?{' '}
-          <Link href="/auth/login" className="text-purple-400 hover:underline">
+          <Link href="/auth/login" className="text-blue-400 hover:underline">
             Login
           </Link>
         </p>
