@@ -3,6 +3,7 @@
 import { AlignJustify, LogOut, Plus, SquarePlay } from 'lucide-react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
+import { useState } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,10 @@ import HeaderSearch from './components/header-search';
 
 export default function Header() {
   const { data: session, status } = useSession();
+  const [createOpen, setCreateOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  const channelId = '1';
 
   const fallbackAvatarText = session?.user?.firstName
     ? session.user.firstName.charAt(0).toUpperCase()
@@ -28,25 +33,22 @@ export default function Header() {
         <button className="cursor-pointer p-2 rounded-full hover:bg-gray-800 duration-100">
           <AlignJustify />
         </button>
-        <h1 className="text-2xl font-bold text-white">LOGO</h1>
+        <h1 className="text-2xl font-bold text-white">
+          <Link href={'/'}>LOGO</Link>
+        </h1>
       </div>
 
       <HeaderSearch />
 
       <div className="flex items-center gap-2">
-        <DropdownMenu>
+        <DropdownMenu open={createOpen} onOpenChange={setCreateOpen}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="focus:bg-gray-800  hover:bg-gray-800 hover:text-white focus:text-white rounded-full"
+              className="focus:bg-gray-800 hover:bg-gray-800 hover:text-white focus:text-white rounded-full flex items-center gap-1.5"
             >
-              <Link
-                href={'/create-video'}
-                className="flex items-center gap-1.5"
-              >
-                <Plus size={16} />
-                <span className="text-base">Create</span>
-              </Link>
+              <Plus size={16} />
+              <span className="text-base">Create</span>
             </Button>
           </DropdownMenuTrigger>
 
@@ -55,13 +57,23 @@ export default function Header() {
             align="end"
             forceMount
           >
-            <DropdownMenuItem className="cursor-pointer flex items-center gap-1.5 text-white focus:bg-gray-900 focus:text-white duration-100">
-              <SquarePlay size={14} className="text-white text-sm" /> Add video
+            <DropdownMenuItem
+              className="cursor-pointer text-white focus:bg-gray-900 focus:text-white duration-100"
+              onClick={() => setCreateOpen(false)}
+            >
+              <Link
+                href={`/channel/${channelId}/upload`}
+                className="flex items-center gap-1.5 w-full"
+              >
+                <SquarePlay size={14} className="text-white text-sm" />
+                Add video
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
         {status === 'authenticated' ? (
-          <DropdownMenu>
+          <DropdownMenu open={profileOpen} onOpenChange={setProfileOpen}>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
@@ -86,19 +98,22 @@ export default function Header() {
             >
               <div className="p-3 border-b border-gray-800">
                 <p className="text-sm font-medium text-white">
-                  beretax308@gmail.com
+                  {session.user?.email || 'No email'}
                 </p>
-                <p className="text-xs text-twitch-text-secondary">
-                  Jasunbek Mansuraliyev
+                <p className="text-xs text-gray-400">
+                  {session.user?.firstName || 'User'}
                 </p>
               </div>
 
               <DropdownMenuItem
-                onClick={() => signOut({ callbackUrl: '/' })}
+                onClick={() => {
+                  setProfileOpen(false);
+                  signOut({ callbackUrl: '/' });
+                }}
                 className="cursor-pointer flex items-center gap-1.5 text-white focus:bg-gray-900 focus:text-white duration-100"
               >
-                <LogOut />
-                Logout
+                <LogOut size={16} />
+                <span>Logout</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

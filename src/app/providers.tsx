@@ -5,6 +5,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SessionProvider } from 'next-auth/react';
 import { ReactNode, Suspense } from 'react';
 
+import TopLoader from '@/components/shared/top-loader';
+
 const queryClient = new QueryClient();
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -16,6 +18,7 @@ export function Providers({ children }: { children: ReactNode }) {
         }
       >
         <QueryClientProvider client={queryClient}>
+          <TopLoader />
           {children}
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
