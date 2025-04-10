@@ -37,7 +37,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-gray-800 rounded-lg">
+    <div className="max-w-md mx-auto p-6 bg-gray-900 rounded-lg">
       <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

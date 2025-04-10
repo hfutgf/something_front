@@ -9,4 +9,5 @@ export type UserType = {
   lastName?: string;
   birthday?: string;
   avatar?: string;
+  verified?: boolean;
 };
